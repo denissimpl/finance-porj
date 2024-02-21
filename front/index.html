@@ -13,6 +13,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
     <script defer src="script/echarts.js"></script>
     <script defer src="script/menu.js"></script>
+    <script defer src="script/login.js"></script>
 </head>
 <body>
     
@@ -34,8 +35,24 @@
         </div>
         
         <div class="header__auth">
-            <a href="" class="auth__el">Вход</a>
-            <a href="" class="auth__el">Регистрация</a>
+            <div id="login" class="auth__el">Вход</div>
+            <div id="register" class="auth__el">Регистрация</div>
+            <div class="modal" id="modal_register">
+              <div class="modal__form">
+                <p class="modal__name">Форма регистрации</p>
+                <input type="text" placeholder="Имя" class="modal__input" id="register_name">
+                <input type="password" placeholder="Пароль" class="modal__input" id="register_password">
+                <div class="modal__button" id="reg_btn">Зарегистрироваться</div>
+              </div>
+            </div>
+            <div class="modal" id="modal_login">
+              <div class="modal__form">
+                <p class="modal__name">Приветствуем</p>
+                <input type="text" placeholder="Имя" class="modal__input" id="login_name">
+                <input type="password" placeholder="Пароль" class="modal__input" id="login_password">
+                <div class="modal__button" id="login_btn">Войти</div>
+              </div>
+            </div>
         </div>
         <div id="menu" class="menu">
           <ul class="menu__list">
