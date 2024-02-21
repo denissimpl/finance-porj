@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance</title>
+    <link rel="stylesheet" href="style/normalize.css">
+    <link rel="stylesheet" href="style/headerFooter.css">
+    <link rel="stylesheet" href="style/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script defer src="script/echarts.js"></script>
+    <script defer src="script/menu.js"></script>
+</head>
+<body>
+    
+    <div class="header">
+        <div class="header__burger-container">
+            <svg id="cross" class="header__burger" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 5L4.99998 19M5.00001 5L19 19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg id="burger" class="header__burger" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+              <path fill="#FFFFFF" fill-rule="evenodd" d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"/>
+            </svg>
+        </div>
+      
+        
+        <div class="header__name">
+          <a href="index.html">
+          Finance
+          </a>
+        </div>
+        
+        <div class="header__auth">
+            <a href="" class="auth__el">Вход</a>
+            <a href="" class="auth__el">Регистрация</a>
+        </div>
+        <div id="menu" class="menu">
+          <ul class="menu__list">
+            <li class="menu__item">Больше информации</li>
+            <li class="menu__item">не придумал</li>
+            <li class="menu__item">не придумал</li>
+          </ul>
+        </div>
+    </div>
+    <main class="main">
+      <div class="main__charts">
+        <div class="chart__container">
+          <div class="chart" id="charts__spending">
+          </div>
+          <div class="chart__buttons-container">
+            <div class="chart__button">Добавить</div>
+            <div class="chart__button">Удалить</div>
+          </div>
+        </div>
+        <div class="chart__container">
+          <div class="chart" id="charts__income">
+          </div>
+          <div class="chart__buttons-container">
+            <div class="chart__button">Добавить</div>
+            <div class="chart__button">Удалить</div>
+          </div>
+        </div>
+      </div>
+    </main>
+</body>
+</html>
