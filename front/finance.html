@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="style/root.css">
     <link rel="stylesheet" href="style/normalize.css">
     <link rel="stylesheet" href="style/headerFooter.css">
+    <link rel="stylesheet" href="style/finance.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://unpkg.com/tabulator-tables@5.6.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://unpkg.com/tabulator-tables@5.6.1/dist/js/tabulator.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script defer src="script/menu.js"></script>
     <script defer src="script/loader.js"></script>
@@ -85,8 +88,28 @@
       </div>
     </main>
     <main id="main__auth" class="main">
-      <div class="user__hello">
+      <div class="actions__container">
+        <h2>Доходы</h2>
+        <input type="text" placeholder="Цена" id="income__amount" class="actions__input">
+        <input type="text" placeholder="Категория" id="income__type" class="actions__input">
+        <div class="buttons-container">
+          <div class="button income">Добавить</div>
+          <div class="button income">Удалить</div>
+        </div>
+        <div id="income__list">
+        </div>
+      </div>
+      <div class="actions__container">
+        <h2>Расходы</h2>
+        <input type="text" placeholder="Цена" id="expenses__amount" class="actions__input">
+        <input type="text" placeholder="Категория" id="expenses__type" class="actions__input">
+        <div class="buttons-container">
+          <div class="button expenses">Добавить</div>
+          <div class="button expenses">Удалить</div>
+        </div>
+        <div id="expenses__list">
 
+        </div>
       </div>
     </main>
 </body>

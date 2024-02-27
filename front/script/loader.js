@@ -1,8 +1,4 @@
 
-
-
-
-
 function callbackLoader(asyncFunction) {
     return async function (...args) {
         loader.style.display = "block"

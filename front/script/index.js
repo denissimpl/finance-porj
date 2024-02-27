@@ -31,9 +31,9 @@ function getGreeting() {
 }
 
 const currentAcc = {
-    login: undefined,
-    password: undefined,
-    logged: undefined
+    login: localStorage.getItem("userLogin"),
+    password: localStorage.getItem("userPassword"),
+    logged: localStorage.getItem("userLogged")
 }
 
 function checker () {
@@ -58,7 +58,9 @@ function checker () {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    callbackLoader(indexSession)()
     checker()
+    greeting.innerHTML = getGreeting()
 })
 
 

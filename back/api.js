@@ -48,7 +48,6 @@ class Api {
             console.log(e);
             return false
         }
-        
     }
 
     static validateUser (login, password) {
@@ -66,6 +65,33 @@ class Api {
             validation.reason.push("Слишком длинный логин или пароль")
         }
         return validation
+    }
+
+    async getEntireData (login) {
+        try {
+            await this.client.connect();
+            const result = await this.client.db("users").collection("users").findOne({login})
+            await this.client.close()
+            return result
+        } catch (e) {
+            console.log(e);
+            return false
+        }
+    }
+
+    async handleData (data) {
+        try{
+            await this.client.connect();
+            const result = await this.client.db("users").collection("users").updateOne({login: data.login},{$set: {
+                income: data.data.income, 
+                expenses: data.data.expenses
+            }})
+            await this.client.close()
+            return await this.getEntireData(data.login)
+        } catch (e) {
+            console.log(e);
+            return false
+        }
     }
 }
 

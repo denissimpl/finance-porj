@@ -1,0 +1,63 @@
+:root {
+    --contrast-color:#3c887e ;
+    --light-color:#e0f2e9;
+    --main-color:#ceb5a7;
+    --elements-color:#5b7b7a;
+    --text-color: rgb(25, 25, 25);
+    --text-color-2: rgb(221, 221, 221);
+}
+
+#main__auth{
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.actions__container{
+    background-color: var(--light-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 40%;
+}
+
+.actions__container h2{
+    font-weight: 500;
+}
+
+.buttons-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.button{
+    background-color: var(--main-color);
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+    transition: color, background-color .3s ease;
+}
+
+.button:hover{
+    color: var(--light-color);
+    background-color: var(--elements-color);
+}
+
+.actions__input{
+    margin: 10px;
+    border: none;
+    height: 30px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.tabulator{
+    margin: 10px;
+}

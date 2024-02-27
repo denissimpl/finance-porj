@@ -44,12 +44,8 @@ app.post('/register', async function (req, res) {
     const success = await api.createUser({
       login, 
       password, 
-      income: {
-        total: 0,
-      },
-      expenses: {
-        total: 0,
-      }
+      income: {},
+      expenses:  {},
     })
     if (!success) {
       res.send(JSON.stringify({
