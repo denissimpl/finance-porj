@@ -172,3 +172,52 @@ a:hover{
     color: var(--text-color);
     margin: 0;
 }
+
+@keyframes loader {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#loader{
+    animation: loader 2s linear infinite;
+    position: fixed;
+    height: 100px;
+    width: 100px;
+    text-align: center;
+    bottom: 0;
+    right: 0;
+    background-color: var(--light-color);
+    border-radius: 50%;
+    margin: 10px;
+    display: none;
+}
+
+.modal__cross-container{
+    position: relative;
+    height: 0;
+    width: 100%;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modal__cross{
+    height: 30px;
+    width: 30px;
+   
+}
+
+.modal__cross path{
+    transition: stroke .3s ease;
+}
+
+
+.modal__cross:hover path{
+    stroke: var(--main-color);
+}

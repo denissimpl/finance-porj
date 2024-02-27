@@ -1,0 +1,36 @@
+:root {
+    --contrast-color:#3c887e ;
+    --light-color:#e0f2e9;
+    --main-color:#ceb5a7;
+    --elements-color:#5b7b7a;
+    --text-color: rgb(25, 25, 25);
+    --text-color-2: rgb(221, 221, 221);
+}
+
+.main{
+    z-index: 1;
+    margin-top: 80px;
+    background-color: var(--contrast-color);
+    height: calc(100vh - 260px);
+    box-shadow: 0 0 5px var(--contrast-color);
+    padding: 50px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#main__auth{
+    display: none;
+}
+
+.user__text{
+    color: var(--light-color);
+    font-size: 1.5rem;
+}
+
+.guest__hello{
+    background-color: var(--light-color);
+    padding: 50px;
+    border-radius: 10px;
+}
