@@ -29,7 +29,6 @@ app.post('/register', async function (req, res) {
         status: false,
         reason: validation.reason
       }))
-      console.log('1');
       return
     } 
     const free = await api.checkLoginFreeness({login, password})
@@ -38,7 +37,6 @@ app.post('/register', async function (req, res) {
         status: false,
         reason: "Имя уже занято"
       }))
-      console.log('2');
       return
     }
     const success = await api.createUser({
@@ -52,7 +50,6 @@ app.post('/register', async function (req, res) {
         status:success,
         reason: "creation error"
       }))
-      console.log('3');
       return
     }
     res.send(JSON.stringify({

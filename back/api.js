@@ -9,6 +9,7 @@ class Api {
               deprecationErrors: true,
             }
           });
+          this.data = {}
     }
 
     async getUser ({login, password}) {
@@ -71,6 +72,7 @@ class Api {
         try {
             await this.client.connect();
             const result = await this.client.db("users").collection("users").findOne({login})
+            this.data = result
             await this.client.close()
             return result
         } catch (e) {
@@ -86,12 +88,17 @@ class Api {
                 income: data.data.income, 
                 expenses: data.data.expenses
             }})
+            this.data = data.data
             await this.client.close()
-            return await this.getEntireData(data.login)
+            return this.data
         } catch (e) {
             console.log(e);
             return false
         }
+    }
+
+    getData() {
+        return this.data
     }
 }
 

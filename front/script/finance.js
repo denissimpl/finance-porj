@@ -1,7 +1,11 @@
-function removeObjectsFromArray(fullArray, objectsToRemove) {
-    return fullArray.filter(item => !objectsToRemove.some(obj => isEqualObjects(item, obj)));
-}
-  
+//Инициализация переменных
+let userData = {}
+let selectedExpenses, selectedIncome;
+webSocket = new WebSocket("ws://localhost:5555");
+
+
+
+//Функции для фильтрации объектов
 function isEqualObjects(obj1, obj2) {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
@@ -17,37 +21,30 @@ function isEqualObjects(obj1, obj2) {
     return true;
 }
 
-
-webSocket = new WebSocket("ws://localhost:5555");
-const currentAcc = {
-    login: localStorage.getItem("userLogin"),
-    password: localStorage.getItem("userPassword"),
-    logged: localStorage.getItem("userLogged")
-}
-let userData = {}
-
-async function indexSession () {
-    console.log('Начало проверки текущей сессии');
-    const authStatus = await checkSavedSession()
-    if (authStatus) {
-        console.log('Имеется активная сессия');
-        main__guest.style.display = "none"
-        main__auth.style.display = "flex" 
-    } else {
-        main__guest.style.display = "flex"
-        main__auth.style.display = "none"
-        console.log('Активной сессии нет');
-    }
-    
+function removeObjectsFromArray(fullArray, objectsToRemove) {
+    return fullArray.filter(item => {
+        let found = false;
+        for (const obj of objectsToRemove) {
+            if (isEqualObjects(item, obj)) {
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            objectsToRemove = objectsToRemove.filter(obj => !isEqualObjects(item, obj));
+            return false;
+        }
+        return true;
+    });
 }
 
-let selectedExpenses, selectedIncome;
 
+//Функция для таблиц
 function setTables (userData) {
     let expensesTable = new Tabulator("#expenses__list", {
         selectableRows:true,
         height:"100%", 
-        data: userData.expenses, 
+        data: userData.expenses || null, 
         layout:"fitColumns", 
         columns:[ 
             {title:"name", field:"name"},
@@ -58,14 +55,14 @@ function setTables (userData) {
     let incomeTable = new Tabulator("#income__list", {
         selectableRows:true,
         height:"100%", 
-        data: userData.income, 
+        data: userData.income || null, 
         layout:"fitColumns", 
         columns:[ 
             {title:"name", field:"name"},
             {title:"amount", field:"amount"},
         ],
     });
-    
+    //обработчик кликов по ряду для удаления
     expensesTable.on("rowClick", function(e, row){ 
         selectedExpenses = expensesTable.getSelectedData();
     });
@@ -74,25 +71,7 @@ function setTables (userData) {
     });
 }
 
-
-function checker () {
-    setTimeout(async () => {
-        
-        const acc = {
-            login: localStorage.getItem("userLogin"),
-            password: localStorage.getItem("userPassword"),
-            logged: localStorage.getItem("userLogged")
-        }
-        if (acc.logged !== currentAcc.logged){
-            currentAcc.login = acc.login
-            currentAcc.password = acc.password
-            currentAcc.logged = acc.logged
-            await callbackLoader(indexSession)()
-        }
-        checker()
-    }, 1000);
-}
-
+//отправка запросов по вебсокету
 async function dispatchUserActions (webSocket, type, data) {
     webSocket.send(JSON.stringify({
         login: localStorage.getItem("userLogin"),
@@ -102,6 +81,7 @@ async function dispatchUserActions (webSocket, type, data) {
     }))
 }
 
+//обработка кнопок добавить/удалить
 async function updateActions(e) {
     if (e.target.classList.contains("income")) {
         if (e.target.innerText === "Добавить") {
@@ -109,11 +89,17 @@ async function updateActions(e) {
                 "name": income__type.value,
                 "amount": income__amount.value,
             }
-            userData.income = [...userData.income, data];
-            await dispatchUserActions(webSocket, "UPDATE", userData)
+            if (userData.income) {
+                userData.income = [...userData.income, data];
+            } else {
+                userData.income = [data]
+            }
+            await dispatchUserActions(webSocket, "PUT", userData)
         } else {
-            userData.income = removeObjectsFromArray(userData.income,selectedIncome);
-            await dispatchUserActions(webSocket, "UPDATE", userData)
+            if (userData.income) {
+                userData.income = removeObjectsFromArray(userData.income,selectedIncome);
+            }
+            await dispatchUserActions(webSocket, "DELETE", userData)
         }
     } 
     if (e.target.classList.contains("expenses")){
@@ -122,19 +108,23 @@ async function updateActions(e) {
                 "name": expenses__type.value,
                 "amount": expenses__amount.value,
             }
-            userData.expenses = [...userData.expenses, data];
-            await dispatchUserActions(webSocket, "UPDATE", userData)
+            if (userData.expenses) {
+                userData.expenses = [...userData.expenses, data];
+            } else {
+                userData.expenses = [data]
+            }
+            await dispatchUserActions(webSocket, "PUT", userData)
         } else {
-            userData.expenses = removeObjectsFromArray(userData.expenses,selectedExpenses);
-            await dispatchUserActions(webSocket, "UPDATE", userData)
+            if (userData.expenses){
+                userData.expenses = removeObjectsFromArray(userData.expenses,selectedExpenses);
+            }            
+            await dispatchUserActions(webSocket, "DELETE", userData)
         }
     }
 }
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    callbackLoader(indexSession)()
-    checker()
     
     webSocket.onopen = e => {
         console.log('WS started');
@@ -142,12 +132,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     webSocket.onmessage = e => {
-        userData = JSON.parse(e.data);
-        callbackLoader(setTables)(userData)
+        let data = JSON.parse(e.data);
+        if (JSON.stringify(data) !== JSON.stringify(userData)) {
+            userData = data
+            setTables(userData)
+        }
     }
-
+    
     document.addEventListener("click", async (e) => {
-        callbackLoader(updateActions)(e)
+        updateActions(e)
     })
     
 })

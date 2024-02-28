@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance</title>
+    <link rel="stylesheet" href="style/root.css">
+    <link rel="stylesheet" href="style/normalize.css">
+    <link rel="stylesheet" href="style/headerFooter.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script defer src="script/menu.js"></script>
+    <script defer src="script/loader.js"></script>
+    <script defer src="script/login.js"></script>
+    <script defer src="script/charts.js"></script>
+</head>
+<body>
+    <svg id="loader" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 3V6M12 18V21M6 12H3M21 12H18M5.63672 5.63672L7.75977 7.75977M16.2422 16.2422L18.3633 18.3633M18.3652 5.63477L16.2441 7.75586M7.75781 16.2422L5.63477 18.3652" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="header">
+        <div class="header__burger-container">
+            <svg id="cross" class="header__burger" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 5L4.99998 19M5.00001 5L19 19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg id="burger" class="header__burger" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+              <path fill="#FFFFFF" fill-rule="evenodd" d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"/>
+            </svg>
+        </div>
+      
+        
+        <div class="header__name">
+          <a href="index.html">
+          Finance
+          </a>
+        </div>
+        
+        <div class="header__auth">
+            <div id="login" class="auth__el">Вход</div>
+            <div id="register" class="auth__el">Регистрация</div>
+            <div id="exit" style="display: none;" class="auth__el">Выйти</div>
+            <div class="modal" id="modal_register">
+              <div class="modal__form">
+                <div class="modal__cross-container">
+                  <svg class="modal__cross" width="800px" height="800px" viewBox="0 0 24 24" fill="#none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="modal__cross__path" d="M19 5L4.99998 19M5.00001 5L19 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <p class="modal__name">Форма регистрации</p>
+                <input type="text" placeholder="Имя" class="modal__input" id="register_name">
+                <input type="password" placeholder="Пароль" class="modal__input" id="register_password">
+                <span id="reg__info"></span>
+                <div class="modal__button" id="reg_btn">Зарегистрироваться</div>
+              </div>
+            </div>
+            <div class="modal" id="modal_login">
+              <div class="modal__form">
+                <div class="modal__cross-container">
+                  <svg class="modal__cross" width="800px" height="800px" viewBox="0 0 24 24" fill="#none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="modal__cross__path" d="M19 5L4.99998 19M5.00001 5L19 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <p class="modal__name">Приветствуем</p>
+                <input type="text" placeholder="Имя" class="modal__input" id="login_name">
+                <input type="password" placeholder="Пароль" class="modal__input" id="login_password">
+                <span id="log__info"></span>
+                <div class="modal__button" id="login_btn">Войти</div>
+              </div>
+            </div>
+        </div>
+        <div id="menu" class="menu">
+          <ul class="menu__list">
+            <li class="menu__item"><a href="index.html">На главную</a></li>
+            <li class="menu__item"><a href="finance.html">Ваши доходы и расходы</a></li>
+            <li class="menu__item"><a href="charts.html">Анализ доходов и расходов</a></li>
+          </ul>
+        </div>
+    </div>
+    
+    <main id="main__guest" class="main">
+      <div class="guest__hello">
+        <div class="hello__zag">Приветствуем!</div>
+        <div class="hello_descr">Авторизуйтесь чтобы пользоваться приложением</div>
+      </div>
+    </main>
+    <main id="main__auth" class="main">
+      
+    </main>
+</body>
+</html>

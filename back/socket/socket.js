@@ -11,16 +11,27 @@ async function handleAction(message) {
   switch (message.type){
     case "GET":
       return await api.getEntireData(message.login)
-    case "UPDATE":
+    case "PUT":
       return await api.handleData(message) 
+    case "DELETE":
+      return await api.handleData(message)
   }
 }
 
+
+
 function onConnect(wsClient) {
+  function updateData () {
+    setTimeout(() => {
+      wsClient.send(JSON.stringify(api.getData()))
+      updateData()
+    }, 1500);
+  }
   console.log('connect');
   wsClient.on('message', async function(message) {
     console.log(JSON.parse(message));
     result = await handleAction(JSON.parse(message))
     wsClient.send(JSON.stringify(result))
   })
+  updateData()
 }

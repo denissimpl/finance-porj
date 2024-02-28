@@ -1,5 +1,4 @@
 
-// функция для отправки запроса на бек
 function authReq(urlpath="", body={}){
     try {
         console.log('Запрос на бек (auth)');
@@ -22,7 +21,65 @@ function authReq(urlpath="", body={}){
     
 }
 
-// функция создания текущей сессии
+// Функция проверки активной сессии
+async function indexSession () {
+    console.log('Начало проверки текущей сессии');
+    const authStatus = await checkSavedSession()
+    if (authStatus) {
+        console.log('Имеется активная сессия');
+        main__guest.style.display = "none"
+        main__auth.style.display = "flex" 
+    } else {
+        main__guest.style.display = "flex"
+        main__auth.style.display = "none"
+        console.log('Активной сессии нет');
+    }
+    
+}
+
+
+
+
+function getGreeting() {
+    const name = localStorage.getItem("userLogin")
+    const currentHour = new Date().getHours();
+  
+    if (currentHour >= 5 && currentHour < 12) {
+        return `Доброе утро, ${name}!`;
+    } else if (currentHour >= 12 && currentHour < 18) {
+        return `Добрый день, ${name}!`;
+    } else if (currentHour >= 18 && currentHour < 24) {
+        return `Добрый вечер, ${name}!`;
+    } else {
+        return `Доброй ночи, ${name}!`;
+    }
+}
+
+const currentAcc = {
+    login: localStorage.getItem("userLogin"),
+    password: localStorage.getItem("userPassword"),
+    logged: localStorage.getItem("userLogged")
+}
+
+function checker () {
+    setTimeout(() => {
+        
+        const acc = {
+            login: localStorage.getItem("userLogin"),
+            password: localStorage.getItem("userPassword"),
+            logged: localStorage.getItem("userLogged")
+        }
+        if (acc.logged !== currentAcc.logged){
+            greeting.innerHTML = getGreeting()
+            currentAcc.login = acc.login
+            currentAcc.password = acc.password
+            currentAcc.logged = acc.logged
+            callbackLoader(indexSession)()
+        }
+        checker()
+    }, 1000);
+}
+
 function createSession() {
     register.style.display = "none"
     login.style.display = "none"
@@ -37,7 +94,6 @@ function createSession() {
     }
 }
 
-// функция завершения текущей сессии
 function endSession () {
     register.style.display = "block"
     login.style.display = "block"
@@ -145,3 +201,9 @@ login.onclick = function () {
 register.onclick = function () {
     modal_register.style.display = "flex"
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    callbackLoader(indexSession)()
+    checker()
+})
