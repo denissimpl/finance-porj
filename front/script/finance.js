@@ -152,13 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     webSocket.onmessage = e => {
         let data = JSON.parse(e.data);
-        if (Array.from(data.expenses).length !== expLen || Array.from(data.income).length) {
+        
+        if (Array.from(data.expenses).length !== expLen || Array.from(data.income).length !== incLen) {
             userData = data
             setTables(userData)
-            expLen = data.expenses.length
-            incLen =  data.income.length
+            expLen = Array.from(data.expenses).length
+            incLen =  Array.from(data.income).length
         }
-        
     }
 
     document.addEventListener("click", async (e) => {

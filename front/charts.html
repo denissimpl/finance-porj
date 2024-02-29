@@ -7,9 +7,13 @@
     <link rel="stylesheet" href="style/root.css">
     <link rel="stylesheet" href="style/normalize.css">
     <link rel="stylesheet" href="style/headerFooter.css">
+    <link rel="stylesheet" href="style/charts.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script defer src="
+      https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js
+      "></script>
     <script defer src="script/menu.js"></script>
     <script defer src="script/loader.js"></script>
     <script defer src="script/login.js"></script>
@@ -85,7 +89,19 @@
       </div>
     </main>
     <main id="main__auth" class="main">
-      
+      <div class="main__charts" id="charts">
+        <div class="chart__container">
+          <div class="chart" id="chart1">
+
+          </div>
+
+        </div>
+        <div class="chart__container">
+          <div class="chart" id="chart2">
+
+          </div>
+        </div>
+      </div>
     </main>
 </body>
 </html>
