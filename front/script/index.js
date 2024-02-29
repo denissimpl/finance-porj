@@ -20,7 +20,13 @@ function getGreeting() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    greeting.innerHTML = getGreeting()
+    function greet() {
+        setTimeout(() => {
+            greeting.innerHTML = getGreeting()
+            greet()
+        }, 1000);
+    }
+    greet()
 })
 
 

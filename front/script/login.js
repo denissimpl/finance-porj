@@ -1,4 +1,13 @@
 
+function clearInputs() {
+    reg__info.innerHTML = ""
+    log__info.innerHTML = ""
+    login_name.value = ""
+    login_password.value = ""
+    register_name.value = ""
+    register_password.value = ""
+}
+
 function authReq(urlpath="", body={}){
     try {
         console.log('Запрос на бек (auth)');
@@ -70,7 +79,6 @@ function checker () {
             logged: localStorage.getItem("userLogged")
         }
         if (acc.logged !== currentAcc.logged){
-            greeting.innerHTML = getGreeting()
             currentAcc.login = acc.login
             currentAcc.password = acc.password
             currentAcc.logged = acc.logged
@@ -92,6 +100,7 @@ function createSession() {
     if (acc !== null){
         localStorage.setItem("userLogged", true)
     }
+    clearInputs()
 }
 
 function endSession () {
@@ -108,6 +117,7 @@ function endSession () {
         localStorage.removeItem("userPassword")
         localStorage.removeItem("userLogged")
     }
+    clearInputs()
 }
 
 // функция проверки текущей сессии
@@ -181,12 +191,15 @@ reg_btn.onclick = callbackLoader(async function () {
     }
 })
 
+
+
 // обработка выхода из модалки
 document.addEventListener("click", (e) => { 
     if (e.target.id === "modal_login" || e.target.id === "modal_register"  || e.target.classList.value === "modal__cross" 
             || e.target.classList.value === "modal__cross__path") {
                 modal_login.style.display = "none"
                 modal_register.style.display = "none"
+                clearInputs()
     }
 })
 

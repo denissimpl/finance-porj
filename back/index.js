@@ -7,22 +7,35 @@ const uri = "mongodb+srv://dice:dicedicedice@finance.ynrwdor.mongodb.net/?retryW
 
 
 const api = new Api(uri)
+api.connectMongo()
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 const port = 4444
 
+async function tryWrapper (callback, ...args) {
+  try{
+    await callback(args)
+  } catch (e) {
+    console.log(e);
+    res.send(JSON.stringify({
+      status: false,
+      reason: "uncatched error"
+    }))
+    return
+  }
+} 
+
 
 
 app.post('/register', async function (req, res) {
-  try {
+   tryWrapper(async () => {
     let user;
     await req.on("data", data => {
       user = JSON.parse(data.toString())
     })
     const {login, password} = user
-    console.log(login, password);
     validation = Api.validateUser(login,password)
     if (!validation.status) {
       res.send(JSON.stringify({
@@ -57,26 +70,17 @@ app.post('/register', async function (req, res) {
       login,
       password
     }))
-  } catch (e) {
-    console.log(e);
-    res.send(JSON.stringify({
-      status: false,
-      reason: "uncatched error"
-    }))
-    return
-  }
-   
+   })
   })
 
 app.post('/login', async function (req, res) {
-  try {
+  tryWrapper(async () => {
     let user;
     await req.on("data", data => {
       user = JSON.parse(data.toString())
     })
     const {login, password} = user
-    console.log(login, password);
-    const status = await api.getUser({login, password})
+    const status = await api.getEntireData({login, password})
     if (!status) {
       res.send(JSON.stringify({
         status,
@@ -85,19 +89,24 @@ app.post('/login', async function (req, res) {
       return
     }
     res.send(JSON.stringify({
-      status,
+      status: true,
       login,
       password
     }))
-  } catch (e) {
-    console.log(e);
-    res.send(JSON.stringify({
-      status: false,
-      reason: "uncatched error"
-    }))
-    return
-  }
+  })
   
+})
+
+app.post('/charts', async function (req, res) {
+  tryWrapper(async () => {
+    let user;
+    await req.on("data", data => {
+      user = JSON.parse(data.toString())
+    })
+    let {login, password} = user
+    let result = await api.getEntireData({login, password})
+    res.send(result)
+  })
 })
 
 app.listen(port, () => {
@@ -105,3 +114,6 @@ app.listen(port, () => {
 })
 
 
+process.on('exit',async function (){
+  await api.closeMongo()  
+});

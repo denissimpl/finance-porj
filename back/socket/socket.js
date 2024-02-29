@@ -3,14 +3,16 @@ const Api = require('./../api')
 const uri = "mongodb+srv://dice:dicedicedice@finance.ynrwdor.mongodb.net/?retryWrites=true&w=majority&appName=Finance";
 
 const api = new Api(uri)
+api.connectMongo()
 const wsServer = new WebSocket.Server({port: 5555});
+
 
 wsServer.on('connection', onConnect);
 
 async function handleAction(message) {
   switch (message.type){
     case "GET":
-      return await api.getEntireData(message.login)
+      return await api.getEntireData(message)
     case "PUT":
       return await api.handleData(message) 
     case "DELETE":
@@ -20,7 +22,7 @@ async function handleAction(message) {
 
 
 
-function onConnect(wsClient) {
+async function onConnect(wsClient) {
   function updateData () {
     setTimeout(() => {
       wsClient.send(JSON.stringify(api.getData()))
@@ -29,9 +31,13 @@ function onConnect(wsClient) {
   }
   console.log('connect');
   wsClient.on('message', async function(message) {
-    console.log(JSON.parse(message));
+    // console.log(JSON.parse(message));
     result = await handleAction(JSON.parse(message))
     wsClient.send(JSON.stringify(result))
   })
   updateData()
 }
+
+process.on('exit',async function (){
+  await api.closeMongo()  
+});

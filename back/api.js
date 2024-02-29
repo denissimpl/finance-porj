@@ -12,26 +12,17 @@ class Api {
           this.data = {}
     }
 
-    async getUser ({login, password}) {
-        await this.client.connect();
-        const result = await this.client.db("users").collection("users")
-        .findOne({ login });
-        await this.client.close()
-        if (result) {
-            if (result.password === password){
-                return true
-            }
-            return false
-        } else {
-            return false
-        }
-        
+    async connectMongo () {
+        await this.client.connect()
     }
 
-    async checkLoginFreeness ({login, password}) {
-        await this.client.connect();
-        const result = await this.client.db("users").collection("users").findOne({ login });
+    async closeMongo () {
         await this.client.close()
+    }
+    
+
+    async checkLoginFreeness ({login, password}) {
+        const result = await this.client.db("users").collection("users").findOne({ login });
         if (result) {
             return false
         }
@@ -40,10 +31,8 @@ class Api {
 
     async createUser (data) {
         try{
-            await this.client.connect();
             const result = await this.client.db("users").collection("users").insertOne(data);
             console.log(`New listing created with the following id: ${result.insertedId}`);
-            await this.client.close()
             return true
         } catch (e) {
             console.log(e);
@@ -68,13 +57,18 @@ class Api {
         return validation
     }
 
-    async getEntireData (login) {
+    async getEntireData ({login, password}) {
         try {
-            await this.client.connect();
             const result = await this.client.db("users").collection("users").findOne({login})
-            this.data = result
-            await this.client.close()
-            return result
+            console.log(login, password);
+            if (result) {
+                if (result.password === password){
+                    return result
+                }
+                return false
+            } else {
+                return false
+            }
         } catch (e) {
             console.log(e);
             return false
@@ -83,13 +77,11 @@ class Api {
 
     async handleData (data) {
         try{
-            await this.client.connect();
             const result = await this.client.db("users").collection("users").updateOne({login: data.login},{$set: {
                 income: data.data.income, 
                 expenses: data.data.expenses
             }})
             this.data = data.data
-            await this.client.close()
             return this.data
         } catch (e) {
             console.log(e);

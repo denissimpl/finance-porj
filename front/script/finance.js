@@ -49,6 +49,7 @@ function setTables (userData) {
         columns:[ 
             {title:"name", field:"name"},
             {title:"amount", field:"amount"},
+            {title:"date", field: "date"}
         ],
     });
 
@@ -60,6 +61,7 @@ function setTables (userData) {
         columns:[ 
             {title:"name", field:"name"},
             {title:"amount", field:"amount"},
+            {title:"date", field: "date"}
         ],
     });
     //обработчик кликов по ряду для удаления
@@ -81,6 +83,15 @@ async function dispatchUserActions (webSocket, type, data) {
     }))
 }
 
+function clearButtons () {
+    expenses__type.value = ""
+    expenses__amount.value = ""
+    expenses__date.value = ""
+    income__type.value = ""
+    income__amount.value = ""
+    income__date.value = ""
+}
+
 //обработка кнопок добавить/удалить
 async function updateActions(e) {
     if (e.target.classList.contains("income")) {
@@ -88,6 +99,7 @@ async function updateActions(e) {
             let data = {
                 "name": income__type.value,
                 "amount": income__amount.value,
+                "date": income__date.value
             }
             if (userData.income) {
                 userData.income = [...userData.income, data];
@@ -95,11 +107,13 @@ async function updateActions(e) {
                 userData.income = [data]
             }
             await dispatchUserActions(webSocket, "PUT", userData)
+            clearButtons()
         } else {
             if (userData.income) {
                 userData.income = removeObjectsFromArray(userData.income,selectedIncome);
             }
             await dispatchUserActions(webSocket, "DELETE", userData)
+            clearButtons()
         }
     } 
     if (e.target.classList.contains("expenses")){
@@ -107,6 +121,7 @@ async function updateActions(e) {
             let data = {
                 "name": expenses__type.value,
                 "amount": expenses__amount.value,
+                "date": expenses__date.value
             }
             if (userData.expenses) {
                 userData.expenses = [...userData.expenses, data];
@@ -114,18 +129,22 @@ async function updateActions(e) {
                 userData.expenses = [data]
             }
             await dispatchUserActions(webSocket, "PUT", userData)
+            clearButtons()
+
         } else {
             if (userData.expenses){
                 userData.expenses = removeObjectsFromArray(userData.expenses,selectedExpenses);
             }            
             await dispatchUserActions(webSocket, "DELETE", userData)
+            clearButtons()
         }
     }
+    
 }
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    
+    let expLen = 0,incLen = 0;
     webSocket.onopen = e => {
         console.log('WS started');
         dispatchUserActions(webSocket, "GET")
@@ -133,12 +152,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     webSocket.onmessage = e => {
         let data = JSON.parse(e.data);
-        if (JSON.stringify(data) !== JSON.stringify(userData)) {
+        if (Array.from(data.expenses).length !== expLen || Array.from(data.income).length) {
             userData = data
             setTables(userData)
+            expLen = data.expenses.length
+            incLen =  data.income.length
         }
+        
     }
-    
+
     document.addEventListener("click", async (e) => {
         updateActions(e)
     })
