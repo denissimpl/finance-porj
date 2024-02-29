@@ -60,7 +60,6 @@ class Api {
     async getEntireData ({login, password}) {
         try {
             const result = await this.client.db("users").collection("users").findOne({login})
-            console.log(login, password);
             if (result) {
                 if (result.password === password){
                     return result

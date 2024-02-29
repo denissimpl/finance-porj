@@ -10,19 +10,15 @@ function clearInputs() {
 
 function authReq(urlpath="", body={}){
     try {
-        console.log('Запрос на бек (auth)');
         if (body.length == 0){
-            console.log('Это get запрос');
             request = fetch(`http://localhost:4444${urlpath}`)
         } else {
-            console.log('Это post запрос');
             request = fetch(`http://localhost:4444${urlpath}`,{
                 method:"POST",
                 body:JSON.stringify(body)
             })
         }
         const response = request.then(res => res.json())
-        console.log('Успешный запрос');
         return response
     } catch (e) {
         console.log("Ошибка при отправке запроса на бек" + e)
@@ -32,16 +28,13 @@ function authReq(urlpath="", body={}){
 
 // Функция проверки активной сессии
 async function indexSession () {
-    console.log('Начало проверки текущей сессии');
     const authStatus = await checkSavedSession()
     if (authStatus) {
-        console.log('Имеется активная сессия');
         main__guest.style.display = "none"
         main__auth.style.display = "flex" 
     } else {
         main__guest.style.display = "flex"
         main__auth.style.display = "none"
-        console.log('Активной сессии нет');
     }
     
 }
@@ -72,7 +65,9 @@ const currentAcc = {
 
 function checker () {
     setTimeout(() => {
-        
+        if (window.location.href === "http://127.0.0.1:5500/front/index.html") {
+                greeting.innerHTML = getGreeting()
+        }
         const acc = {
             login: localStorage.getItem("userLogin"),
             password: localStorage.getItem("userPassword"),
@@ -120,7 +115,7 @@ function endSession () {
     clearInputs()
 }
 
-// функция проверки текущей сессии
+
 async function checkSavedSession() {
     const acc = {
         login: localStorage.getItem("userLogin"),
@@ -136,7 +131,6 @@ async function checkSavedSession() {
             }
             
             let response = await authReq("/login",loginfo)
-            console.log(response);
             if (response.status) {
                 createSession()
                 return true
@@ -146,14 +140,13 @@ async function checkSavedSession() {
     return false
 }
 
-// нажатие на кнопку войти
+
 login_btn.onclick = callbackLoader(async function () {
     let loginfo = {
         login: login_name.value,
         password: login_password.value
     }
     let response = await authReq("/login",loginfo)
-    console.log(response);
     if (response.status) {
         log__info.innerHTML = "Успешно"
         log__info.style.color = "green"
@@ -170,15 +163,14 @@ login_btn.onclick = callbackLoader(async function () {
     }
 })
 
-// нажатие на кнопку зарегистрироваться
+
+
 reg_btn.onclick = callbackLoader(async function () {
-    console.log('Регистрация');
     let reginfo = {
         login: register_name.value,
         password: register_password.value
     }
     let response = await authReq("/register",reginfo)
-    console.log(response);
     if (response.status) {
         reg__info.innerHTML = "Успешно"
         reg__info.style.color = "green"
@@ -193,7 +185,6 @@ reg_btn.onclick = callbackLoader(async function () {
 
 
 
-// обработка выхода из модалки
 document.addEventListener("click", (e) => { 
     if (e.target.id === "modal_login" || e.target.id === "modal_register"  || e.target.classList.value === "modal__cross" 
             || e.target.classList.value === "modal__cross__path") {

@@ -11,7 +11,7 @@
     z-index: 1;
     margin-top: 80px;
     background-color: var(--contrast-color);
-    height: calc(100vh - 260px);
+    min-height: calc(100vh - 260px);
     box-shadow: 0 0 5px var(--contrast-color);
     padding: 50px 0;
     display: flex;

@@ -3,20 +3,19 @@ async function getData(urlpath="/charts"){
         login: localStorage.getItem("userLogin"),
         password: localStorage.getItem("userPassword")
     }
+
     try {
-        console.log('Это post запрос');
         request = fetch(`http://localhost:4444${urlpath}`,{
             method:"POST",
             body:JSON.stringify(data)
         })
         const response = request.then(res => res.json())
-        console.log('Успешный запрос');
         return response
     } catch (e) {
         console.log("Ошибка при отправке запроса на бек" + e)
-    }
-    
+    }    
 }
+
 
 function getMonthName(monthNumber) {
     const date = new Date();
@@ -24,9 +23,11 @@ function getMonthName(monthNumber) {
     return date.toLocaleString('ru-Ru', { month: 'long' });
 }
 
+
 let expMonObj = {}
 let incMonObj = {}
 let expMonArr = new Array()
+
 
 async function sumData() {
     let date = new Date()
@@ -52,6 +53,8 @@ async function sumData() {
             expMonObj[obj.name.toLowerCase()] = Number(obj.amount)
         }
     }
+
+
     for (prop in expMonObj) {
         expMonArr.push({
             value: expMonObj[prop],
@@ -144,30 +147,3 @@ document.addEventListener("DOMContentLoaded",async () => {
     createChartExp()
     createChartInc()
 })
-
-
-// var m
-
-// var option = {
-//   title: {
-//     text: 'ECharts Getting Started Example'
-//   },
-//   tooltip: {},
-//   legend: {
-//     data: ['sales']
-//   },
-//   xAxis: {
-//     data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']
-//   },
-//   yAxis: {},
-//   series: [
-//     {
-//       name: 'sales',
-//       type: 'bar',
-//       data: [5, 20, 36, 10, 10, 20]
-//     }
-//   ]
-// };
-
-// // Display the chart using the configuration items and data just specified.
-// my

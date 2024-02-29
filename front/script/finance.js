@@ -1,11 +1,9 @@
-//Инициализация переменных
 let userData = {}
 let selectedExpenses, selectedIncome;
 webSocket = new WebSocket("ws://localhost:5555");
 
 
 
-//Функции для фильтрации объектов
 function isEqualObjects(obj1, obj2) {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
@@ -39,7 +37,6 @@ function removeObjectsFromArray(fullArray, objectsToRemove) {
 }
 
 
-//Функция для таблиц
 function setTables (userData) {
     let expensesTable = new Tabulator("#expenses__list", {
         selectableRows:true,
@@ -64,16 +61,16 @@ function setTables (userData) {
             {title:"date", field: "date"}
         ],
     });
-    //обработчик кликов по ряду для удаления
+
     expensesTable.on("rowClick", function(e, row){ 
         selectedExpenses = expensesTable.getSelectedData();
     });
+
     incomeTable.on("rowClick", function(e, row){ 
         selectedIncome = incomeTable.getSelectedData(); 
     });
 }
 
-//отправка запросов по вебсокету
 async function dispatchUserActions (webSocket, type, data) {
     webSocket.send(JSON.stringify({
         login: localStorage.getItem("userLogin"),
@@ -92,7 +89,6 @@ function clearButtons () {
     income__date.value = ""
 }
 
-//обработка кнопок добавить/удалить
 async function updateActions(e) {
     if (e.target.classList.contains("income")) {
         if (e.target.innerText === "Добавить") {
@@ -106,14 +102,15 @@ async function updateActions(e) {
             } else {
                 userData.income = [data]
             }
-            await dispatchUserActions(webSocket, "PUT", userData)
+            if (data.name !== "" && data.amount !== "" && data.date !== "") {
+                await dispatchUserActions(webSocket, "PUT", userData)
+            }
             clearButtons()
         } else {
             if (userData.income) {
                 userData.income = removeObjectsFromArray(userData.income,selectedIncome);
             }
             await dispatchUserActions(webSocket, "DELETE", userData)
-            clearButtons()
         }
     } 
     if (e.target.classList.contains("expenses")){
@@ -128,13 +125,15 @@ async function updateActions(e) {
             } else {
                 userData.expenses = [data]
             }
-            await dispatchUserActions(webSocket, "PUT", userData)
+            if (data.name !== "" && data.amount !== "" && data.date !== "") {
+                await dispatchUserActions(webSocket, "PUT", userData)
+            }
             clearButtons()
 
         } else {
             if (userData.expenses){
                 userData.expenses = removeObjectsFromArray(userData.expenses,selectedExpenses);
-            }            
+            }
             await dispatchUserActions(webSocket, "DELETE", userData)
             clearButtons()
         }
@@ -146,7 +145,6 @@ async function updateActions(e) {
 document.addEventListener("DOMContentLoaded", () => {
     let expLen = 0,incLen = 0;
     webSocket.onopen = e => {
-        console.log('WS started');
         dispatchUserActions(webSocket, "GET")
     }
 

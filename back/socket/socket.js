@@ -14,7 +14,7 @@ async function handleAction(message) {
     case "GET":
       return await api.getEntireData(message)
     case "PUT":
-      return await api.handleData(message) 
+      return await api.handleData(message)
     case "DELETE":
       return await api.handleData(message)
   }
@@ -29,9 +29,7 @@ async function onConnect(wsClient) {
       updateData()
     }, 1500);
   }
-  console.log('connect');
   wsClient.on('message', async function(message) {
-    // console.log(JSON.parse(message));
     result = await handleAction(JSON.parse(message))
     wsClient.send(JSON.stringify(result))
   })
